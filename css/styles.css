@@ -51,9 +51,9 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
-  height: 80px;
   background-color: #252831;
-  text-align:center;
+  text-align: center;
+  padding: 25px;
 }
 nav h1 {
   margin: auto;
@@ -186,7 +186,7 @@ nav h1 a {
 .inside header {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: calc(100% - 50px);
   z-index: 1000;
 }
 .inside #map-container {
@@ -203,9 +203,10 @@ nav h1 a {
   width: 100%;
 }
 .inside #footer {
+  position: fixed;
   bottom: 0;
-  position: absolute;
-  width: 50%;
+  width: calc(100% - 50px);;
+  z-index: 1000;
 }
 #restaurant-name {
   color: #f18200;
