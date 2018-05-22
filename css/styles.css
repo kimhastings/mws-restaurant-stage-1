@@ -50,7 +50,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 /* ====================== Navigation ====================== */
 nav {
-  width: 100%;
+  width: calc(100% - 50px);;
   background-color: #252831;
   text-align: center;
   padding: 25px;
@@ -205,7 +205,7 @@ nav h1 a {
   width: 100%;
 }
 .inside #footer {
-  position: fixed;
+  position: sticky;
   bottom: 0;
   width: calc(100% - 50px);;
   z-index: 1000;
