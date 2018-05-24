@@ -50,10 +50,10 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 /* ====================== Navigation ====================== */
 nav {
-  width: calc(100% - 50px);;
   background-color: #252831;
   text-align: center;
   padding: 25px;
+  width: calc(100% - 50px);;
 }
 nav h1 {
   margin: auto;
@@ -66,11 +66,11 @@ nav h1 a {
   text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 10px 40px 16px;
     list-style: none;
     background-color: #eee;
     font-size: 17px;
     margin: 0;
+    padding: 10px 40px 16px;
     width: calc(50% - 80px);
 }
 
@@ -105,8 +105,8 @@ nav h1 a {
 }
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
-  width: 100%;
   height: 90px;
+  width: 100%;
   background-color: #3397DB;
   align-items: center;
 }
@@ -130,6 +130,12 @@ nav h1 a {
   width: 200px;
 }
 
+/* Need more space when the selectors are stacked on top of each other */
+@media screen and (max-width: 443px) {
+  .filter-options {
+    height: 150px;
+  }
+}
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
   background-color: #f3f3f3;
@@ -147,14 +153,19 @@ nav h1 a {
   min-height: 380px;
   padding: 25px 30px;
   text-align: left;
-  width: 270px;
+  width: 240px;
+}
+/* For really small devices, need to shrink the width of restaurant li */
+@media screen and (max-width: 360px) {
+  #restaurants-list li {
+    width: calc(100% - 94px);
+  }
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
   margin: 0;
   max-width: 100%;
-  min-height: 248px;
   min-width: 100%;
 }
 #restaurants-list li h1 {
