@@ -1,12 +1,12 @@
-var cacheName = 'restaurant-info-V1';
+var cacheName = 'restaurant-info-V2';
 var filesToCache = [
     '/',
     '/index.html',
-    'restaurant.html',
+    '/restaurant.html',
     '/js/main.js',
     '/js/restaurant_info.js',
     '/js/dbhelper.js',
-    '/css/sty;es.css',
+    '/css/styles.css',
     '/data/restaurants.json',
     '/img/1.jpg',
     '/img/2.jpg',
