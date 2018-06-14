@@ -1,4 +1,4 @@
-var cacheName = 'restaurant-info-V2';
+var cacheName = 'restaurant-info-V7';
 var filesToCache = [
     '/',
     '/index.html',
