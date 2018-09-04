@@ -1,4 +1,4 @@
-var cacheName = 'restaurant-info-V7';
+var cacheName = 'restaurant-info-V8';
 var filesToCache = [
     '/',
     '/index.html',
@@ -7,7 +7,6 @@ var filesToCache = [
     '/js/restaurant_info.js',
     '/js/dbhelper.js',
     '/css/styles.css',
-    '/data/restaurants.json',
     '/img/1.jpg',
     '/img/2.jpg',
     '/img/3.jpg',
