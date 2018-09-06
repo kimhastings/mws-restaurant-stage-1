@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/kimhastings/mws-restaurant-stage-1#readme",
   "devDependencies": {
+    "del": "^3.0.0",
     "gulp": "^3.9.1"
   },
   "dependencies": {
