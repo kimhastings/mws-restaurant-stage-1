@@ -3,10 +3,11 @@ var filesToCache = [
     '/',
     '/index.html',
     '/restaurant.html',
-    '/js/main.js',
-    '/js/restaurant_info.js',
-    '/js/dbhelper.js',
-    '/css/styles.css',
+    '/bundle_js/main_bundle.js',
+    '/bundle_js/maps/main_bundle.js.map',
+    '/bundle_js/maps/restaurant_bundle.js.map',
+    '/bundle_js/restaurant_bundle.js',
+    '/css/styles.min.css',
     '/img/1.jpg',
     '/img/2.jpg',
     '/img/3.jpg',
@@ -16,7 +17,8 @@ var filesToCache = [
     '/img/7.jpg',
     '/img/8.jpg',
     '/img/9.jpg',
-    '/img/10.jpg'
+    '/img/10.jpg',
+    '/img/undefined.jpg'
 ];
 
 self.addEventListener('install', function(e) {

@@ -16,9 +16,12 @@ class DBHelper {
 
   static dbPromise() {
     return idb.open('db', 1, function(upgradeDb) {
-      upgradeDb.createObjectStore('restaurants', {
-        keyPath: 'id'
-      });
+      switch (upgradeDb.oldVersion) {
+        case 0:
+          upgradeDb.createObjectStore('restaurants', {
+            keyPath: 'id'
+          });
+        }
     });
   }
    
@@ -169,7 +172,11 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}.jpg`);
+    if (restaurant.photograph) {
+      return (`/img/${restaurant.photograph}.jpg`);
+    } else {
+      return (`/img/undefined.jpg`);
+    }
   }
 
   /**
@@ -198,3 +205,4 @@ class DBHelper {
 
 }
 
+module.exports = DBHelper;
