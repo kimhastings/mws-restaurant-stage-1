@@ -1,6 +1,8 @@
 /**
  * Common database helper functions.
  */
+import idb from 'idb';
+
 class DBHelper {
 
   /**
@@ -12,8 +14,16 @@ class DBHelper {
     return `http://localhost:${port}/restaurants/`;
   }
 
+  static dbPromise() {
+    return idb.open('db', 1, function(upgradeDb) {
+      upgradeDb.createObjectStore('restaurants', {
+        keyPath: 'id'
+      });
+    });
+  }
+   
   /**
-   * Fetch all restaurants.
+   * Fetch and cache all restaurants.
    */
   static fetchRestaurants(callback) {
 /* 

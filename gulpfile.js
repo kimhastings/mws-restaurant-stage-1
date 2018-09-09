@@ -4,6 +4,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const clean_css = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const browserify = require('browserify');
+const babelify = require("babelify");
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const sourcemaps = require('gulp-sourcemaps');
@@ -30,32 +31,40 @@ const build_css = () => {
 }
 
 // JS: Nothing special for now
-const copy_js = () => {
-    return gulp.src(`src/js/*.js`)
+const build_js = () => {
+    return gulp.src(['src/js/main.js', 'src/js/restaurant_info.js'])
         .pipe(gulp.dest(`build/js`));
 }
 
-// SW: Process service worker ES6 code into minified ES5 (allows use of import)
-const build_sw = () => {
-    return browserify('src/service-worker.js')
-        .transform('babelify')
+// JS: Process dbhelper ES6 code into minified ES5 (allows use of import)
+const build_dbhelper = () => {
+    return browserify('src/js/dbhelper.js')
+       .transform(babelify.configure ({
+            presets: ["env"]
+        }))
         .bundle()
-        .pipe(source('service-worker.js'))
+        .pipe(source('dbhelper.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('build/'));
+        .pipe(gulp.dest('build/js'));
+}
+
+// JS: Nothing special for now
+const build_sw = () => {
+    return gulp.src(`src/service-worker.js`)
+        .pipe(gulp.dest(`build/`));
 }
 
 // Resources just get copied to build folder
-const copy_img = () => {
+const build_img = () => {
     return gulp.src(`src/img/*`)
         .pipe(gulp.dest(`build/img`));
 }
 
 // Build process
-const build = gulp.series(clean, build_html, build_css, copy_js, build_sw, copy_img);
+const build = gulp.series(clean, build_html, build_css, build_js, build_dbhelper, build_sw, build_img);
 
 // Watchers (watch src files for changes, then rebuild)
 gulp.task('watch', () => {
