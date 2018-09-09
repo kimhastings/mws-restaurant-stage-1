@@ -1,15 +1,14 @@
-const gulp = require('gulp');
-const del = require('del');
-const autoprefixer = require('gulp-autoprefixer');
-const clean_css = require('gulp-clean-css');
-const concat = require('gulp-concat');
-const browserify = require('browserify');
-const babelify = require("babelify");
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const sourcemaps = require('gulp-sourcemaps');
-const uglify = require('gulp-uglify');
-const livereload = require('gulp-livereload');
+import gulp from 'gulp';
+import del from 'del';
+import autoprefixer from 'gulp-autoprefixer';
+import clean_css from 'gulp-clean-css';
+import concat from 'gulp-concat';
+import browserify from 'browserify';
+import babelify from "babelify";
+import source from 'vinyl-source-stream';
+import buffer from 'vinyl-buffer';
+import sourcemaps from 'gulp-sourcemaps';
+import uglify from 'gulp-uglify';
 
 // Empty out the build directory
 const clean = () => {
@@ -31,7 +30,7 @@ const build_css = () => {
         .pipe(gulp.dest(`build/css`));
 }
 
-// JS: Process ES6 code into minified ES5 (allows use of import)
+// JS: Process ES6 code into minified ES5 (allows use of const)
 const build_js_main = () => {
     return browserify(['src/js/main.js', 'src/js/dbhelper.js'])
     .transform(babelify.configure({
@@ -46,7 +45,7 @@ const build_js_main = () => {
     .pipe(gulp.dest('build/bundle_js'));
 }
 
-// JS: Process ES6 code into minified ES5 (allows use of import)
+// JS: Process ES6 code into minified ES5 (allows use of const)
 const build_js_restaurant = () => {
     return browserify(['src/js/restaurant_info.js', 'src/js/dbhelper.js'])
     .transform(babelify.configure({
