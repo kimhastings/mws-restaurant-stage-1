@@ -106,7 +106,7 @@ var initMap = () => {
 /**
  * Update page and map for current restaurants.
  */
-var updateRestaurants = () => {
+window.updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 

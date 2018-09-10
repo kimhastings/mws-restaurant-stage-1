@@ -30,7 +30,7 @@ const build_css = () => {
         .pipe(gulp.dest(`build/css`));
 }
 
-// JS: Process ES6 code into minified ES5 (allows use of const)
+// JS: Process ES6 code into minified ES5 (allows use of import)
 const build_js_main = () => {
     return browserify(['src/js/main.js', 'src/js/dbhelper.js'])
     .transform(babelify.configure({
@@ -45,7 +45,7 @@ const build_js_main = () => {
     .pipe(gulp.dest('build/bundle_js'));
 }
 
-// JS: Process ES6 code into minified ES5 (allows use of const)
+// JS: Process ES6 code into minified ES5 (allows use of import)
 const build_js_restaurant = () => {
     return browserify(['src/js/restaurant_info.js', 'src/js/dbhelper.js'])
     .transform(babelify.configure({
