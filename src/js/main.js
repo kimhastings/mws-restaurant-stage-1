@@ -8,11 +8,14 @@ var markers = [];
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
+ * Move event listeners for filters from index.html into this script
  */
 document.addEventListener('DOMContentLoaded', (event) => {
   initMap(); // added 
   fetchTheNeighborhoods();
   fetchTheCuisines();
+  document.getElementById("neighborhoods-select").addEventListener('change', updateRestaurants);
+  document.getElementById("cuisines-select").addEventListener('change', updateRestaurants);
 });
 
 /**
@@ -106,7 +109,7 @@ var initMap = () => {
 /**
  * Update page and map for current restaurants.
  */
-window.updateRestaurants = () => {
+var updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 
