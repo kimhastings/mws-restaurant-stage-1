@@ -49,23 +49,12 @@ class DBHelper {
     xhr.send();
  */
 
-    // If available, return cached restaurant data from database
-    dbPromise.then (db => {
-
-      var tx = db.transaction('restaurants');
-      var store = tx.objectStore('restaurants');
-      var cached_data = store.getAll();
-
-      if (cached_data.length > 0) {
-        return callback(null , cached_data);
-      }
-    });
-
-    // Next, update restaurant database from server (if online - so don't call fetch if server is offline)
+    // Try to fetch restaurant database from server
     fetch(`${DBHelper.DATABASE_URL}`)
       .then (response => {
         return response.json();
       })
+      // Fetch succeeded. Return the live data after caching it in the database
       .then(server_data => {
         dbPromise.then (db => {
           var tx = db.transaction('restaurants' , 'readwrite');
@@ -74,7 +63,15 @@ class DBHelper {
         });
         return callback (null, server_data);
       })
-      .catch (error => callback (`Request failed. Returned status of ${error.statusText}`, null));
+      // Fetch failed. Return the cached data from the database
+      .catch (error => {
+        return dbPromise.then (db => {
+          var tx = db.transaction('restaurants' , 'readwrite');
+          var store = tx.objectStore('restaurants');
+          var cached_data = store.getAll();
+          return callback (null, cached_data);
+        });
+      })
   }
 
   /**
