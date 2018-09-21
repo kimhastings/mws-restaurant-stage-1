@@ -1,32 +1,36 @@
-/**
+/*
  * Common database helper functions.
  */
+
+/*
+ * DBHelper uses an idb database
+ */
+
 import idb from 'idb';
+
+const dbPromise = idb.open("db", 1, upgradeDB => {
+  switch (upgradeDB.oldVersion) {
+    case 0:
+      upgradeDB.createObjectStore("restaurants", {
+         keyPath: "id"
+      });
+  }
+});
 
 class DBHelper {
 
-  /**
-   * Database URL.
+  /*
+   * Server database URL.
    * Change this to restaurants location on your server.
    */
   static get DATABASE_URL() {
-    const port = 1337 // Change this to your server port
+    const port = 1337; // Change this to your server port
     return `http://localhost:${port}/restaurants/`;
   }
 
-  static dbPromise() {
-    return idb.open('db', 1, function(upgradeDb) {
-      switch (upgradeDb.oldVersion) {
-        case 0:
-          upgradeDb.createObjectStore('restaurants', {
-            keyPath: 'id'
-          });
-        }
-    });
-  }
-   
-  /**
-   * Fetch and cache all restaurants.
+
+  /*
+   * Fetch and cache all restaurants
    */
   static fetchRestaurants(callback) {
 /* 
@@ -45,11 +49,31 @@ class DBHelper {
     xhr.send();
  */
 
+    // If available, return cached restaurant data from database
+    dbPromise.then (db => {
+
+      var tx = db.transaction('restaurants');
+      var store = tx.objectStore('restaurants');
+      var cached_data = store.getAll();
+
+      if (cached_data.length > 0) {
+        return callback(null , cached_data);
+      }
+    });
+
+    // Next, update restaurant database from server (if online - so don't call fetch if server is offline)
     fetch(`${DBHelper.DATABASE_URL}`)
-      .then (function (response) {
+      .then (response => {
         return response.json();
       })
-      .then (data => callback (null, data))
+      .then(server_data => {
+        dbPromise.then (db => {
+          var tx = db.transaction('restaurants' , 'readwrite');
+          var store = tx.objectStore('restaurants');
+          server_data.forEach(restaurant => store.put(restaurant));
+        });
+        return callback (null, server_data);
+      })
       .catch (error => callback (`Request failed. Returned status of ${error.statusText}`, null));
   }
 
