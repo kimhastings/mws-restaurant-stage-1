@@ -15,6 +15,12 @@ const clean = () => {
     return del(['build']);
 }
 
+// PWA needs manifest
+const build_manifest = () => {
+    return gulp.src('src/manifest.json')
+        .pipe(gulp.dest(`build/`));
+}
+
 // HTML: nothing needed here beyond copying to the build dir
 const build_html = () => {
     return gulp.src('src/*.html')
@@ -72,8 +78,14 @@ const build_img = () => {
         .pipe(gulp.dest(`build/img`));
 }
 
+// Icons just get copied to build folder
+const build_icon = () => {
+    return gulp.src(`src/icons/*`)
+        .pipe(gulp.dest(`build/icons`));
+}
+
 // Build process
-const build = gulp.series(clean, build_html, build_css, build_js_main, build_js_restaurant, build_sw, build_img);
+const build = gulp.series(clean, build_manifest, build_html, build_css, build_js_main, build_js_restaurant, build_sw, build_img, build_icon);
 
 // Watchers (watch src files for changes, then rebuild)
 gulp.task('watch', () => {

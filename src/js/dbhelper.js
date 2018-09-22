@@ -194,6 +194,17 @@ class DBHelper {
   }
 
   /**
+   * Restaurant image URL base.
+   */
+  static imageUrlBaseForRestaurant(restaurant) {
+    if (restaurant.photograph) {
+      return (`/img/${restaurant.photograph}`);
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {

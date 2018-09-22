@@ -167,7 +167,16 @@ var createRestaurantHTML = (restaurant) => {
   image.className = 'restaurant-img';
   console.log('[Main] Creating HTML for ' + restaurant.name);
   image.alt = restaurant.name;
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  if (restaurant.photograph) {
+    const imageURLBase = DBHelper.imageUrlBaseForRestaurant(restaurant);
+    const imageURL = imageURLBase + ".jpg";
+    const imageURL320w = imageURLBase + "-320w.jpg";
+    const imageURL480w = imageURLBase + "-480w.jpg";  
+    image.src = imageURL;
+    image.srcset = `${imageURL320w} 320w, ${imageURL480w} 480w`;  
+  } else {
+    image.src = `/img/undefined.jpg`;
+  }
   li.append(image);
 
   const name = document.createElement('h2');
