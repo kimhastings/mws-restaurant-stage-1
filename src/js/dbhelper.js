@@ -55,7 +55,7 @@ class DBHelper {
         return response.json();
       })
       // Fetch succeeded. Return the live data after caching it in the database
-      .then(server_data => {
+      .then (server_data => {
         dbPromise.then (db => {
           var tx = db.transaction('restaurants' , 'readwrite');
           var store = tx.objectStore('restaurants');
@@ -65,12 +65,16 @@ class DBHelper {
       })
       // Fetch failed. Return the cached data from the database
       .catch (error => {
-        return dbPromise.then (db => {
+        console.log ("DBHelper: Fetch failed and caught");
+        dbPromise.then (db => {
           var tx = db.transaction('restaurants' , 'readwrite');
           var store = tx.objectStore('restaurants');
           var cached_data = store.getAll();
+          return cached_data;
+        })
+        .then (cached_data => {
           return callback (null, cached_data);
-        });
+        })
       })
   }
 
