@@ -194,6 +194,21 @@ nav h1 a {
   text-decoration: none;
   text-transform: uppercase;
 }
+#restaurants-list .favorite-button {
+  background: white;
+  font-size : 20px;
+  border : 1px gray;
+  border-radius: 30%;
+  height : 40px;
+  width : 40px;
+  padding: 0px;
+}
+#restaurants-list .favorite-true {
+  color: #d73030;
+}
+#restaurants-list .favorite-false {
+  color: #4c4c4c;
+}
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
@@ -288,7 +303,7 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;

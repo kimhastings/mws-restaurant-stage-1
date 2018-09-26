@@ -14,6 +14,11 @@ const dbPromise = idb.open("db", 1, upgradeDB => {
       upgradeDB.createObjectStore("restaurants", {
          keyPath: "id"
       });
+    case 1:
+      const reviewsStore = upgradeDB.createObjectStore("reviews", {
+         keyPath: "id"
+      });
+      reviewsStore.createIndex ("restaurant", "restaurant_id");
   }
 });
 
@@ -25,7 +30,7 @@ class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 1337; // Change this to your server port
-    return `http://localhost:${port}/restaurants/`;
+    return `http://localhost:${port}/restaurants`;
   }
 
 
@@ -239,6 +244,33 @@ class DBHelper {
     return marker;
   } */
 
+  /**
+   * Update restaurant's favorite status
+   */
+  static updateFavoriteStatus (restaurant) {
+    console.log ("Changing favorite status to ", restaurant.is_favorite);
+
+    // Try to update favorite status on server
+    fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${restaurant.is_favorite}`, {
+      method: "PUT"
+    })
+      .then (() => {
+        // PUT succeeded. Update the database to keep it in sync with server
+        dbPromise.then (db => {
+          var tx = db.transaction('restaurants' , 'readwrite');
+          var store = tx.objectStore('restaurants');
+          store.get(restaurant.id)
+            .then (dbRecord => {
+              dbRecord.is_favorite = restaurant.is_favorite;
+              store.put (restaurant);
+            });
+        });
+      })
+      .catch (error => {
+        // PUT failed
+        console.log ("DBHelper: PUT failed to update favorite status");
+     })
+  }   
 }
 
 module.exports = DBHelper;

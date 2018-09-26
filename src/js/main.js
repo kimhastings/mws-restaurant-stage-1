@@ -183,6 +183,25 @@ var createRestaurantHTML = (restaurant) => {
   name.innerHTML = restaurant.name;
   li.append(name);
 
+  const favorite = document.createElement('button');
+  favorite.innerHTML = "❤︎";
+  favorite.classList.add ("favorite-button");
+  setFavoriteButtonDisplay (favorite, restaurant.is_favorite);
+  // Handler to toggle favorite button status/display when clicked
+  favorite.onclick = function () {
+    console.log ("Favorite clicked. Current status:", restaurant.is_favorite);
+    // restaurant.is_favorite is a string on the server, so keep it that way 
+    if (restaurant.is_favorite === "true") {
+      restaurant.is_favorite = "false";
+    } else {
+      restaurant.is_favorite = "true";
+    };
+    console.log ("New status:", restaurant.is_favorite);
+    DBHelper.updateFavoriteStatus (restaurant);
+    setFavoriteButtonDisplay (favorite, restaurant.is_favorite);
+  }
+  li.append(favorite);
+
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
   li.append(neighborhood);
@@ -201,6 +220,23 @@ var createRestaurantHTML = (restaurant) => {
   li.append(more);
 
   return li;
+};
+
+/**
+ * Update display of favorite button
+ */
+var setFavoriteButtonDisplay = (button, status) => {
+  if (status === "true") {
+    console.log ("Favoriting");
+    button.classList.add ("favorite-true");
+    button.classList.remove ("favorite-false");
+    button.setAttribute ("aria-label", "Unfavorite this restaurant");
+  } else {
+    console.log ("Unfavoriting");
+    button.classList.add ("favorite-false");
+    button.classList.remove ("favorite-true");
+    button.setAttribute ("aria-label", "Favorite this restaurant");
+  }
 };
 
 /**
