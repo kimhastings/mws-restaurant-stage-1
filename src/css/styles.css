@@ -237,10 +237,12 @@ nav h1 a {
     top: 160px;
   }
 }
- .inside #map {
+.inside #map {
   background-color: #ccc;
   height: 300px;
   width: 100%;
+  z-index: 1;
+  margin: 60px 0px 0px;
 }
 .inside #footer {
   position: sticky;
@@ -277,7 +279,7 @@ nav h1 a {
   text-transform: uppercase;
 	width: 95%;
 }
-#restaurant-container, #reviews-container {
+#restaurant-container, #review-form-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 120px 20px 30px;
@@ -288,8 +290,15 @@ nav h1 a {
     padding-top: 160px;
   }
 }
+#review-form-container h2 {
+  color: #9100ff;
+  font-size: 24pt;
+  font-weight: 300;
+  letter-spacing: -1px;
+  padding-bottom: 1pt;
+}
 
-#reviews-container {
+#review-form-container, #reviews-container {
   padding: 30px 20px 30px;
 }
 #reviews-container h2 {

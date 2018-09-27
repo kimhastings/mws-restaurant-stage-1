@@ -25,7 +25,7 @@
       <ul id="breadcrumb">
         <li><a href="/">Home</a></li>
       </ul>
-    </nav>nav>
+    </nav>
     <!-- End breadcrumb -->
     <!-- End nav -->
   </header>
@@ -47,6 +47,36 @@
       <table id="restaurant-hours"></table>
     </section>
     <!-- end restaurant -->
+    <!-- Beginning review form -->
+    <section id="review-form-container">
+      <h2 id="form-name">Add Your Review</h2>
+      <form id="review-form">
+        <p>
+            <label for="review-author">Your Name:</label><br>
+            <input id="review-author" name="name" type="text" />   
+        </p>
+
+        <div class="rating-container">
+          <p>Your Rating: 
+            <select aria-label="Rating 1 to 5" id="rating_select" name="rating">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            </p>
+        </div>
+
+        <p>
+            <label for="review-comments">Your Comments:</label><br>
+            <textarea id="review-comments" name="comments"></textarea><br>    
+        </p>
+
+        <button class="submit-button" onclick="submitReview()">Submit</button>
+      </form>
+    </section>
+    <!-- End review form -->
     <!-- Beginning reviews -->
     <section id="reviews-container">
       <ul id="reviews-list"></ul>
