@@ -49,8 +49,7 @@ self.addEventListener('fetch', function(e) {
 
   // Don't try to fetch restaurant details that should be coming from the server (or idb)
   if (e.request.url.startsWith('http://localhost:1337')) {
-    console.log('[ServiceWorker] Skipping fetch call to data server');
-    return;
+    console.log('[ServiceWorker] Fetch call to data server');
   }
 
   e.respondWith(
