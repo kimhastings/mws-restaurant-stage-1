@@ -25,12 +25,16 @@ const dbPromise = idb.open("db", 1, upgradeDB => {
 class DBHelper {
 
   /*
-   * Server database URL.
-   * Change this to restaurants location on your server.
+   * Server database URLS
+   * Change this to your server
    */
-  static get DATABASE_URL() {
+  static get RESTAURANT_SERVER_URL() {
     const port = 1337; // Change this to your server port
     return `http://localhost:${port}/restaurants`;
+  }
+  static get REVIEW_SERVER_URL() {
+    const port = 1337; // Change this to your server port
+    return `http://localhost:${port}/reviews`;
   }
 
 
@@ -40,7 +44,7 @@ class DBHelper {
   static fetchRestaurants(callback) {
 /* 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
+    xhr.open('GET', DBHelper.RESTAURANT_SERVER_URL);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
         const json = JSON.parse(xhr.responseText);
@@ -55,7 +59,7 @@ class DBHelper {
  */
 
     // Try to fetch restaurant database from server
-    fetch(`${DBHelper.DATABASE_URL}`)
+    fetch(`${DBHelper.RESTAURANT_SERVER_URL}`)
       .then (response => {
         return response.json();
       })
@@ -70,7 +74,7 @@ class DBHelper {
       })
       // Fetch failed. Return the cached data from the database
       .catch (error => {
-        console.log ("DBHelper: Fetch failed and caught");
+        console.log ("DBHelper: Restaurant fetch failed and caught");
         dbPromise.then (db => {
           var tx = db.transaction('restaurants' , 'readwrite');
           var store = tx.objectStore('restaurants');
@@ -251,7 +255,7 @@ class DBHelper {
     console.log ("Changing favorite status to ", restaurant.is_favorite);
 
     // Try to update favorite status on server
-    fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${restaurant.is_favorite}`, {
+    fetch(`${DBHelper.RESTAURANT_SERVER_URL}/${restaurant.id}/?is_favorite=${restaurant.is_favorite}`, {
       method: "PUT"
     })
       .then (() => {
@@ -271,6 +275,40 @@ class DBHelper {
         console.log ("DBHelper: PUT failed to update favorite status");
      })
   }   
-}
 
-module.exports = DBHelper;
+  /*
+   * Fetch and cache reviews for a restaurant
+   */
+  static fetchReviewsForRestaurant(id, callback) {
+    
+        // Try to fetch restaurant reviews from server
+        fetch(`${DBHelper.REVIEW_SERVER_URL}/?restaurant_id=${id}`)
+          .then (response => {
+            return response.json();
+          })
+          // Fetch succeeded. Return the live data after caching it in the database
+          .then (server_data => {
+            dbPromise.then (db => {
+              var tx = db.transaction('reviews' , 'readwrite');
+              var store = tx.objectStore('reviews');
+              server_data.forEach(review => store.put(review));
+            });
+            return callback (null, server_data);
+          })
+          // Fetch failed. Return the cached data from the database
+          .catch (error => {
+            console.log ("DBHelper: Review fetch failed and caught");
+            dbPromise.then (db => {
+              var tx = db.transaction('reviews' , 'readwrite');
+              var store = tx.objectStore('reviews');
+              var cached_data = store.getAll();
+              return cached_data;
+            })
+            .then (cached_data => {
+              return callback (null, cached_data);
+            })
+          })
+      }
+    }
+  
+    module.exports = DBHelper;

@@ -100,7 +100,23 @@ var fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  fillReviewsHTML();
+
+  DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+    if (error) { // Got an error!
+      console.error(error);
+    } else {
+      resetRestaurants(restaurants);
+      fillRestaurantsHTML();
+    }
+  });
+
+  DBHelper.fetchReviewsForRestaurant (restaurant.id, (error, reviews) => {
+    if (error) { // Got an error!
+      console.error(error);
+    } else {
+      fillReviewsHTML(reviews);
+    }
+  });
 }
 
 /**
@@ -125,8 +141,9 @@ var fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours)
 
 /**
  * Create all reviews HTML and add them to the webpage.
+   OLD: var fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
-var fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+var fillReviewsHTML = (reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';

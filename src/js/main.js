@@ -189,14 +189,12 @@ var createRestaurantHTML = (restaurant) => {
   setFavoriteButtonDisplay (favorite, restaurant.is_favorite);
   // Handler to toggle favorite button status/display when clicked
   favorite.onclick = function () {
-    console.log ("Favorite clicked. Current status:", restaurant.is_favorite);
     // restaurant.is_favorite is a string on the server, so keep it that way 
     if (restaurant.is_favorite === "true") {
       restaurant.is_favorite = "false";
     } else {
       restaurant.is_favorite = "true";
     };
-    console.log ("New status:", restaurant.is_favorite);
     DBHelper.updateFavoriteStatus (restaurant);
     setFavoriteButtonDisplay (favorite, restaurant.is_favorite);
   }
