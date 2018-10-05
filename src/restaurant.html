@@ -49,14 +49,14 @@
     <!-- end restaurant -->
     <!-- Beginning review form -->
     <section id="review-form-container">
-      <h2 id="form-name">Add Your Review</h2>
+      <h2 id="form-name">Add A Review</h2>
       <form id="review-form">
         <p>
             <label for="review-author">Your Name:</label><br>
             <input id="review-author" name="name" type="text" />   
         </p>
 
-        <div class="rating-container">
+        <div id="rating-container">
           <p>Your Rating: 
             <select aria-label="Rating 1 to 5" id="rating_select" name="rating">
               <option value="1">1</option>
@@ -73,7 +73,7 @@
             <textarea id="review-comments" name="comments"></textarea><br>    
         </p>
 
-        <button class="submit-button" onclick="submitReview()">Submit</button>
+        <button id="submit-review" onclick="submitReview()">Submit</button>
       </form>
     </section>
     <!-- End review form -->
