@@ -5,9 +5,11 @@ var newMap;
 
 /**
  * Initialize map as soon as the page is loaded.
+ * Button event handler also needs to be assigned here, since submitReview is not visible to the HTML
  */
 document.addEventListener('DOMContentLoaded', (event) => {  
   initMap();
+  document.getElementById("submit-review").addEventListener('click', submitReview);
 });
 
 /**
@@ -131,7 +133,7 @@ var fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours)
 
 /**
  * Create all reviews HTML and add them to the webpage.
-   OLD: var fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+ *  OLD: var fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 var fillReviewsHTML = (reviews) => {
   const container = document.getElementById('reviews-container');
@@ -177,6 +179,24 @@ var createReviewHTML = (review) => {
 }
 
 /**
+ * Submit new review from form, then reset form
+ */
+var submitReview = () => {
+  event.preventDefault();
+
+  const name = document.getElementById('review-author').value;
+  const rating = document.getElementById('review-rating').value;
+  const comments = document.getElementById('review-comments').value;
+
+  console.log ("New Review by:" + name);
+  console.log ("Rating:" + rating);
+  console.log ("Comments:" + comments);
+  alert ("Review accepted!");
+
+  // Reset form
+}
+
+/**
  * Add restaurant name to the breadcrumb navigation menu
  */
 var fillBreadcrumb = (restaurant=self.restaurant) => {
@@ -201,3 +221,4 @@ var getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+

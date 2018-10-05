@@ -50,32 +50,27 @@
     <!-- Beginning review form -->
     <section id="review-form-container">
       <h2 id="form-name">Add A Review</h2>
-      <form id="review-form">
-        <p>
+       <p>
             <label for="review-author">Your Name:</label><br>
-            <input id="review-author" name="name" type="text" />   
+            <input id="review-author" name="author" type="text" />   
         </p>
-
         <div id="rating-container">
           <p>Your Rating: 
-            <select aria-label="Rating 1 to 5" id="rating_select" name="rating">
+            <select aria-label="Rating 1 to 5" id="review-rating" name="rating">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
-            </p>
+          </p>
         </div>
-
         <p>
             <label for="review-comments">Your Comments:</label><br>
             <textarea id="review-comments" name="comments"></textarea><br>    
         </p>
-
-        <button id="submit-review" onclick="submitReview()">Submit</button>
-      </form>
-    </section>
+        <button id="submit-review">Submit</button>
+   </section>
     <!-- End review form -->
     <!-- Beginning reviews -->
     <section id="reviews-container">

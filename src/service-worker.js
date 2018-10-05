@@ -8,7 +8,6 @@ var cacheName = 'restaurant-app';
 var filesToCache = [
   '/',
   '/index.html',
-  '/restaurant.html',
   '/bundle_js/main_bundle.js',
   '/bundle_js/maps/main_bundle.js.map',
   '/bundle_js/maps/restaurant_bundle.js.map',

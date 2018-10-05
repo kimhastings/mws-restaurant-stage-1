@@ -94,7 +94,8 @@ gulp.task('watch', () => {
 })
 
 // Set the default tasks to "build" and watch
-gulp.task('default', gulp.series(build, 'watch'), () => {
+// gulp.task('default', gulp.series(build, 'watch'), () => {
+gulp.task('default', gulp.series(build), () => {
     console.log('Starting...');
 })
 
