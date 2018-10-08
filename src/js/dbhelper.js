@@ -309,6 +309,37 @@ class DBHelper {
             })
           })
       }
+
+    /*
+     * Add new restaurant review
+     */
+    static addReview(review) {
+      // Try to post review to server
+      fetch(`${DBHelper.REVIEW_SERVER_URL}`, {
+        method: 'POST', 
+        mode:'cors',
+        headers: new Headers ({'Content-Type': 'application/json; charset=utf-8'}),
+        body: JSON.stringify(review)
+      })
+        .then((response) => {
+          // POST succeeded. Update the database to keep it in sync with server
+          dbPromise.then (db => {
+            var tx = db.transaction('reviews' , 'readwrite');
+            var store = tx.objectStore('reviews');
+            store.add( {
+              id: Date.now(),
+              data: review
+            });
+            return tx.complete;
+          });
+        })
+        .catch (error => {
+          // POST failed. Save review to be posted when server comes back online
+          console.log ("DBHelper: POST failed");
+        })
     }
-  
+
+  }
+
+
     module.exports = DBHelper;

@@ -184,16 +184,31 @@ var createReviewHTML = (review) => {
 var submitReview = () => {
   event.preventDefault();
 
+  const restaurantId = getParameterByName('id');
   const name = document.getElementById('review-author').value;
   const rating = document.getElementById('review-rating').value;
   const comments = document.getElementById('review-comments').value;
 
-  console.log ("New Review by:" + name);
-  console.log ("Rating:" + rating);
-  console.log ("Comments:" + comments);
-  alert ("Review accepted!");
+  const newReview = {
+    'restaurant_id': parseInt(restaurantId),
+    'name': name,
+    'rating': parseInt(rating),
+    'comments': comments,
+    'createdAt': Date.now()
+  };
+
+  // Send review to backend
+  DBHelper.addReview(newReview);
+
+  // Add review to DOM
+  const reviewList = document.getElementById("reviews-list");
+  reviewList.insertBefore(createReviewHTML(newReview), reviewList.firstChild);
 
   // Reset form
+  alert ("Review accepted!");
+  document.getElementById('review-author').value = null;
+  document.getElementById('review-rating').value = "1";
+  document.getElementById('review-comments').value = null;
 }
 
 /**
