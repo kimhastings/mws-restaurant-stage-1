@@ -16,7 +16,8 @@ const dbPromise = idb.open("db", 1, upgradeDB => {
       });
     case 1:
       const reviewsStore = upgradeDB.createObjectStore("reviews", {
-         keyPath: "id"
+         keyPath: "id",
+         autoIncrement: true
       });
       reviewsStore.createIndex ("restaurant", "restaurant_id");
   }
@@ -326,10 +327,7 @@ class DBHelper {
           dbPromise.then (db => {
             var tx = db.transaction('reviews' , 'readwrite');
             var store = tx.objectStore('reviews');
-            store.add( {
-              id: Date.now(),
-              data: review
-            });
+            store.add(review);
             return tx.complete;
           });
         })
