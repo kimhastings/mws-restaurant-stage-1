@@ -19,7 +19,11 @@ const dbPromise = idb.open("db", 1, upgradeDB => {
          keyPath: "id",
          autoIncrement: true
       });
-      reviewsStore.createIndex ("restaurant", "restaurant_id");
+    case 2:
+      upgradeDB.createObjectStore("pending", {
+         keyPath: "id",
+         autoIncrement: true
+      });
   }
 });
 
@@ -334,10 +338,60 @@ class DBHelper {
         .catch (error => {
           // POST failed. Save review to be posted when server comes back online
           console.log ("DBHelper: POST failed");
+          dbPromise.then (db => {
+            var tx = db.transaction('pending' , 'readwrite');
+            var store = tx.objectStore('pending');
+            store.add(review);
+            return tx.complete;
+          });
         })
+    }
+
+    /*
+     * Add pending restaurant reviews
+     */
+    static addPendingReviews() {
+      dbPromise
+      // Get pending reviews from store
+      .then (db => {
+          var tx = db.transaction('pending' , 'readwrite');
+          var store = tx.objectStore('pending');
+          return store.getAll();
+      })
+      // Post pending reviews to server
+      .then (pendingReviews => {
+        pendingReviews.forEach(review => {
+          fetch(`${DBHelper.REVIEW_SERVER_URL}`, {
+            method: 'POST', 
+            mode:'cors',
+            headers: new Headers ({'Content-Type': 'application/json; charset=utf-8'}),
+            body: JSON.stringify(review)
+          })              
+          .then((response) => {
+            // Update the database to keep it in sync with server
+            dbPromise.then (db => {
+              var tx = db.transaction('reviews' , 'readwrite');
+              var store = tx.objectStore('reviews');
+              store.add(review);
+              return tx.complete;
+            });
+          })
+        })
+      })
+      // Better luck next time
+      .catch (error => {
+        return;
+      });
+
+      // Clear pending reviews from store (only if fetch succeeds)
+      dbPromise.then (db => {
+        var tx = db.transaction('pending' , 'readwrite');
+        var store = tx.objectStore('pending');
+        store.clear();
+        return tx.complete;
+      })
     }
 
   }
 
-
-    module.exports = DBHelper;
+  module.exports = DBHelper;

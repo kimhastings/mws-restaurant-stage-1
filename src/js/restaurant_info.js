@@ -4,11 +4,13 @@ let restaurant;
 var newMap;
 
 /**
- * Initialize map as soon as the page is loaded.
+ * Initialize map as soon as the page is loaded
+ * Then check to see if there are reviews waiting to be written to the server
  * Button event handler also needs to be assigned here, since submitReview is not visible to the HTML
  */
 document.addEventListener('DOMContentLoaded', (event) => {  
   initMap();
+  DBHelper.addPendingReviews();
   document.getElementById("submit-review").addEventListener('click', submitReview);
 });
 
@@ -205,7 +207,6 @@ var submitReview = () => {
   reviewList.insertBefore(createReviewHTML(newReview), reviewList.firstChild);
 
   // Reset form
-  alert ("Review accepted!");
   document.getElementById('review-author').value = null;
   document.getElementById('review-rating').value = "1";
   document.getElementById('review-comments').value = null;
