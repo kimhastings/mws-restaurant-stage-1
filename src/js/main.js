@@ -78,10 +78,10 @@ var fillCuisinesHTML = (cuisines = self.cuisines) => {
  */
 var initMap = () => {
   self.newMap = L.map('map', {
-        center: [40.722216, -73.987501],
-        zoom: 12,
-        scrollWheelZoom: false
-      });
+    center: [40.722216, -73.987501],
+    zoom: 12,
+    scrollWheelZoom: false
+  });
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
     mapboxToken: 'pk.eyJ1Ijoia2ltaGFzdGluZ3MiLCJhIjoiY2ppZXVrc2JqMDFxMDNxbzhzcG04M2RsdyJ9.f57inHpFpV7YEf0ProTv7Q',
     maxZoom: 18,
@@ -161,19 +161,20 @@ var fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 var createRestaurantHTML = (restaurant) => {
+  console.log('[Main] Creating HTML for ' + restaurant.name);
+
   const li = document.createElement('li');
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  console.log('[Main] Creating HTML for ' + restaurant.name);
-  image.alt = restaurant.name;
+  image.alt = restaurant.name + ' Restaurant';
   if (restaurant.photograph) {
     const imageURLBase = DBHelper.imageUrlBaseForRestaurant(restaurant);
     const imageURL = imageURLBase + ".jpg";
     const imageURL320w = imageURLBase + "-320w.jpg";
-    const imageURL480w = imageURLBase + "-480w.jpg";  
+    const imageURL480w = imageURLBase + "-480w.jpg";
     image.src = imageURL;
-    image.srcset = `${imageURL320w} 320w, ${imageURL480w} 480w`;  
+    image.srcset = `${imageURL320w} 320w, ${imageURL480w} 480w`;
   } else {
     image.src = `/img/undefined.jpg`;
   }
@@ -185,8 +186,8 @@ var createRestaurantHTML = (restaurant) => {
 
   const favorite = document.createElement('button');
   favorite.innerHTML = "❤︎";
-  favorite.classList.add ("favorite-button");
-  setFavoriteButtonDisplay (favorite, restaurant.is_favorite);
+  favorite.classList.add("favorite-button");
+  setFavoriteButtonDisplay(favorite, restaurant.is_favorite);
   // Handler to toggle favorite button status/display when clicked
   favorite.onclick = function () {
     // restaurant.is_favorite is a string on the server, so keep it that way 
@@ -195,8 +196,8 @@ var createRestaurantHTML = (restaurant) => {
     } else {
       restaurant.is_favorite = "true";
     };
-    DBHelper.updateFavoriteStatus (restaurant);
-    setFavoriteButtonDisplay (favorite, restaurant.is_favorite);
+    DBHelper.updateFavoriteStatus(restaurant);
+    setFavoriteButtonDisplay(favorite, restaurant.is_favorite);
   }
   li.append(favorite);
 
@@ -225,15 +226,15 @@ var createRestaurantHTML = (restaurant) => {
  */
 var setFavoriteButtonDisplay = (button, status) => {
   if (status === "true") {
-    console.log ("Favoriting");
-    button.classList.add ("favorite-true");
-    button.classList.remove ("favorite-false");
-    button.setAttribute ("aria-label", "Unfavorite this restaurant");
+    console.log("Favoriting");
+    button.classList.add("favorite-true");
+    button.classList.remove("favorite-false");
+    button.setAttribute("aria-label", "Unfavorite this restaurant");
   } else {
-    console.log ("Unfavoriting");
-    button.classList.add ("favorite-false");
-    button.classList.remove ("favorite-true");
-    button.setAttribute ("aria-label", "Favorite this restaurant");
+    console.log("Unfavoriting");
+    button.classList.add("favorite-false");
+    button.classList.remove("favorite-true");
+    button.setAttribute("aria-label", "Favorite this restaurant");
   }
 };
 
@@ -245,6 +246,7 @@ var addMarkersToMap = (restaurants = self.restaurants) => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.newMap);
     marker.on("click", onClick);
+
     function onClick() {
       window.location.href = marker.options.url;
     }
@@ -268,8 +270,10 @@ var addMarkersToMap = (restaurants = self.restaurants) => {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('./service-worker.js')
-    .then(function() { console.log('Service Worker Registered'); })
-    .catch(function(err) {console.log('Error registering Service Worker', err); });
-}           
-
-
+    .then(function () {
+      console.log('Service Worker Registered');
+    })
+    .catch(function (err) {
+      console.log('Error registering Service Worker', err);
+    });
+}
